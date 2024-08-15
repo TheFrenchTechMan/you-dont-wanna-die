@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.2
+Date: 15/08/2024
+  Fixes:
+    - Fixed a crash happening when the number of researched technologies was 0.
