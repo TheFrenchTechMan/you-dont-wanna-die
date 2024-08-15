@@ -1,4 +1,6 @@
 local function clear_tech(force, tech_name)
+    
+
     local t = {}
 
     local function get_tech_and_neighbour(filtered_tech)
@@ -22,28 +24,33 @@ local function clear_tech(force, tech_name)
     end
 end
 
+local tech_clearer = settings.global["tech-clearer"].value
+
 script.on_event(
     defines.events.on_player_died,
     function(event)
         local player_index = event.player_index
         local player = game.get_player(player_index)
         local force = player.force
+        
 
-        local techs = {}
-        for _, data in pairs(force.technologies) do
-            if data.researched then
-                techs[#techs + 1] = data.name
+        if tech_clearer == true then
+            local techs = {}
+            for _, data in pairs(force.technologies) do
+                if data.researched then
+                    techs[#techs + 1] = data.name
+                end
             end
-        end
 
-        local count = #techs
+            local count = #techs
 
-        if count > 0 then
+            if count > 0 then
             
-            local tech_name = techs[math.random(1, count)]
-            if tech_name then
-                clear_tech(force, tech_name)
-                game.print('Cleared ' .. tech_name .. ' for ' .. force.name)
+                local tech_name = techs[math.random(1, count)]
+                if tech_name then
+                    clear_tech(force, tech_name)
+                    game.print('Cleared ' .. tech_name .. ' for ' .. force.name)
+                end
             end
         end
     end
