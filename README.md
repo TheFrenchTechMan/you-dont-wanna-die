@@ -1,8 +1,8 @@
-# You Don't Wanna Die!
+# You Don't Wanna Die
 
 ## Description
 
-You Don't Wanna Die! is a mod created to make the death in Factorio a bit more penalizing than what it is currently.
+You Don't Wanna Die is a mod created to make the death in Factorio a bit more penalizing than what it is currently.
 
 ## Current features
 
