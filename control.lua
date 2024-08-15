@@ -38,7 +38,8 @@ script.on_event(
 
         local count = #techs
 
-        if count then
+        if count > 0 then
+            
             local tech_name = techs[math.random(1, count)]
             if tech_name then
                 clear_tech(force, tech_name)
