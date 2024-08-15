@@ -24,8 +24,6 @@ local function clear_tech(force, tech_name)
     end
 end
 
-local tech_clearer = settings.global["tech-clearer"].value
-
 script.on_event(
     defines.events.on_player_died,
     function(event)
@@ -34,7 +32,7 @@ script.on_event(
         local force = player.force
         
 
-        if tech_clearer == true then
+        if settings.global["tech-clearer"].value == true then
             local techs = {}
             for _, data in pairs(force.technologies) do
                 if data.researched then

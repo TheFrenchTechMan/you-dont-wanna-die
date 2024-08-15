@@ -1,5 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.3
+Date: 15/08/24
+  Features:
+    - Added a mod option to enable or disable the technology clearer.
+---------------------------------------------------------------------------------------------------
 Version: 1.0.2
 Date: 15/08/2024
-  Fixes:
+  Bugfixes:
     - Fixed a crash happening when the number of researched technologies was 0.
