@@ -16,3 +16,4 @@ You Don't Wanna Die is a mod created to make the death in Factorio a bit more pe
 ## Thanks
 
 - Huge thanks to @Gerkiz on Discord for his help on the technology clearer.
+- Thanks to [@PennyJim](https://github.com/PennyJim)
