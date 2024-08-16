@@ -10,7 +10,6 @@ You Don't Wanna Die is a mod created to make the death in Factorio a bit more pe
 
 ## To Do
 
-- Mod options section to choose which penalties you want
 - More penalties
 
 ## Thanks
