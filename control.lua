@@ -32,6 +32,7 @@ script.on_event(
         local force = player.force
         
 
+        --MARK: TECH CLEARER
         if settings.global["tech-clearer"].value == true then
             local techs = {}
             for _, data in pairs(force.technologies) do
@@ -50,6 +51,13 @@ script.on_event(
                     game.print('Cleared ' .. tech_name .. ' for ' .. force.name)
                 end
             end
+        end
+
+        --MARK: ENTITY REMOVER
+        if settings.global["entity-remover"].value > 0 then
+            local entities = game.surfaces["nauvis"].find_entities()
+            local selected_entity = entities[math.random(#entities)]
+            game.print(selected_entity)
         end
     end
 )
