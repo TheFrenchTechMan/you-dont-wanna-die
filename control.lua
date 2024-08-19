@@ -24,9 +24,35 @@ local function clear_tech(force, tech_name)
     end
 end
 
+local function get_valid_entities()
+    return game.surfaces["nauvis"].find_entities_filtered{
+        type={
+        "ammo", 
+        "ammo-category", 
+        "character",
+        "cliff", 
+        "corpse", 
+        "entity-ghost", 
+        "explosion", 
+        "fire",
+        "fish", 
+        "fluid", 
+        "optimized-decorative", 
+        "optimized-particle", 
+        "projectile", 
+        "resource", 
+        "simple-entity", 
+        "tile", 
+        "tree", 
+        "unit"
+        }, 
+        name="character-corpse", 
+        valid=false, --remember, it's reversed
+        invert=true
+    }
+end
 
-
---MARK:MAIN SCRIPT:
+--MARK:MAIN SCRIPT
 script.on_event(
     defines.events.on_player_died,
     function(event)
@@ -58,42 +84,29 @@ script.on_event(
 
         --MARK: ENTITY REMOVER
         if settings.global["entity-remover"].value > 0 then
-            local entities = game.surfaces["nauvis"].find_entities_filtered{
-                type={
-                "ammo", 
-                "ammo-category", 
-                "character",
-                "cliff", 
-                "corpse", 
-                "entity-ghost", 
-                "explosion", 
-                "fire",
-                "fish", 
-                "fluid", 
-                "optimized-decorative", 
-                "optimized-particle", 
-                "projectile", 
-                "resource", 
-                "simple-entity", 
-                "tile", 
-                "tree", 
-                "unit"
-                }, 
-                name="character-corpse", 
-                invert=true
-            }
-            local i = 1
-            
-            local max = #entities
-            if max < settings.global["entity-remover"].value then
-                j = max
+            local j = 0
+            local entities = get_valid_entities()
+            local entity_count = #entities
+            if entity_count == 0 then
+                game.print("You're so poor the mod found nothing to remove!")
+            end
+            if entity_count < settings.global["entity-remover"].value then
+                j = entity_count
             else
                 j = settings.global["entity-remover"].value
             end
             for i = 1, j, 1 do
-                local selected_entity = entities[math.random(#entities)]
-                posX = selected_entity.position["x"]
-                posY = selected_entity.position["y"]
+                local entities = get_valid_entities()
+                local entity_count = #entities
+                if entity_count < settings.global["entity-remover"].value then
+                    j = entity_count
+                else
+                    j = settings.global["entity-remover"].value
+                end
+                local random_number = math.random(j)
+                local selected_entity = entities[random_number] --it says error but it's fine
+                local posX = selected_entity.position["x"]
+                local posY = selected_entity.position["y"]                    
                 game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
                 selected_entity.destroy()
             end
