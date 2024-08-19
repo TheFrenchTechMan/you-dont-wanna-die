@@ -1,3 +1,4 @@
+---@diagnostic disable: cast-local-type
 local function clear_tech(force, tech_name)
     
 
@@ -104,7 +105,7 @@ script.on_event(
                     j = settings.global["entity-remover"].value
                 end
                 local random_number = math.random(j)
-                local selected_entity = entities[random_number] --it says error but it's fine
+                local selected_entity = entities[random_number]
                 local posX = selected_entity.position["x"]
                 local posY = selected_entity.position["y"]                    
                 game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
