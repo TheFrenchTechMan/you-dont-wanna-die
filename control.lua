@@ -24,6 +24,9 @@ local function clear_tech(force, tech_name)
     end
 end
 
+
+
+--MARK:MAIN SCRIPT:
 script.on_event(
     defines.events.on_player_died,
     function(event)
@@ -55,9 +58,33 @@ script.on_event(
 
         --MARK: ENTITY REMOVER
         if settings.global["entity-remover"].value > 0 then
-            local entities = game.surfaces["nauvis"].find_entities()
+            local entities = game.surfaces["nauvis"].find_entities_filtered{
+                type={
+                "ammo", 
+                "ammo-category", 
+                "cliff", 
+                "corpse", 
+                "entity-ghost", 
+                "explosion", 
+                "fire",
+                "fish", 
+                "fluid", 
+                "optimized-decorative", 
+                "optimized-particle", 
+                "projectile", 
+                "resource", 
+                "simple-entity", 
+                "tile", 
+                "tree", 
+                "unit"
+                }, 
+                name="character-corpse", 
+                invert=true
+            }
             local selected_entity = entities[math.random(#entities)]
-            game.print(selected_entity)
+            game.print(selected_entity.type)
+            game.print(selected_entity.name)
+            game.print(selected_entity.position)
         end
     end
 )
