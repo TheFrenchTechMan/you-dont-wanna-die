@@ -62,6 +62,7 @@ script.on_event(
                 type={
                 "ammo", 
                 "ammo-category", 
+                "character",
                 "cliff", 
                 "corpse", 
                 "entity-ghost", 
@@ -81,10 +82,21 @@ script.on_event(
                 name="character-corpse", 
                 invert=true
             }
-            local selected_entity = entities[math.random(#entities)]
-            game.print(selected_entity.type)
-            game.print(selected_entity.name)
-            game.print(selected_entity.position)
+            local i = 1
+            
+            local max = #entities
+            if max < settings.global["entity-remover"].value then
+                j = max
+            else
+                j = settings.global["entity-remover"].value
+            end
+            for i = 1, j, 1 do
+                local selected_entity = entities[math.random(#entities)]
+                posX = selected_entity.position["x"]
+                posY = selected_entity.position["y"]
+                game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
+                selected_entity.destroy()
+            end
         end
     end
 )
