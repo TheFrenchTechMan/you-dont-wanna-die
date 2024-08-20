@@ -43,5 +43,6 @@ luac.out
 *.x86_64
 *.hex
 
-# VSCode folder
+# Other
+control-old.lua
 .vscode/

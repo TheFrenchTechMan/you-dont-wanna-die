@@ -1,57 +1,6 @@
 ---@diagnostic disable: cast-local-type
-local function clear_tech(force, tech_name)
-    
 
-    local t = {}
-
-    local function get_tech_and_neighbour(filtered_tech)
-        for _, data in pairs(force.technologies) do
-            for _, req in pairs(data.prerequisites) do
-                if req.name == filtered_tech then
-                    force.technologies[data.name].researched = false
-                    force.technologies[req.name].researched = false
-                    t[#t + 1] = data.name
-                end
-            end
-        end
-    end
-
-    get_tech_and_neighbour(tech_name)
-
-    if #t > 0 then
-        for _, tech in pairs(t) do
-            get_tech_and_neighbour(tech)
-        end
-    end
-end
-
-local function get_valid_entities()
-    return game.surfaces["nauvis"].find_entities_filtered{
-        type={
-        "ammo", 
-        "ammo-category", 
-        "character",
-        "cliff", 
-        "corpse", 
-        "entity-ghost", 
-        "explosion", 
-        "fire",
-        "fish", 
-        "fluid", 
-        "optimized-decorative", 
-        "optimized-particle", 
-        "projectile", 
-        "resource", 
-        "simple-entity", 
-        "tile", 
-        "tree", 
-        "unit"
-        }, 
-        name="character-corpse", 
-        valid=false, --remember, it's reversed
-        invert=true
-    }
-end
+ydwd = require "ydwd_functions"
 
 --MARK:MAIN SCRIPT
 script.on_event(
@@ -65,6 +14,7 @@ script.on_event(
         --MARK: TECH CLEARER
         if settings.global["tech-clearer"].value == true then
             local techs = {}
+            local localised_techs = {}
             for _, data in pairs(force.technologies) do
                 if data.researched then
                     techs[#techs + 1] = data.name
@@ -74,42 +24,41 @@ script.on_event(
             local count = #techs
 
             if count > 0 then
-            
                 local tech_name = techs[math.random(1, count)]
                 if tech_name then
-                    clear_tech(force, tech_name)
-                    game.print('Cleared ' .. tech_name .. ' for ' .. force.name)
+                    ydwd.clear_tech(force, tech_name)
+                    game.print('Cleared ' .. tech_name)
                 end
             end
         end
 
         --MARK: ENTITY REMOVER
         if settings.global["entity-remover"].value > 0 then
-            local j = 0
-            local entities = get_valid_entities()
-            local entity_count = #entities
-            if entity_count == 0 then
-                game.print("You're so poor the mod found nothing to remove!")
-            end
-            if entity_count < settings.global["entity-remover"].value then
-                j = entity_count
+            local settings_value = settings.global["entity-remover"].value
+            valid_entities = ydwd.get_valid_entities()
+
+            if #valid_entities >= settings_value then
+                iters = settings_value
             else
-                j = settings.global["entity-remover"].value
-            end
-            for i = 1, j, 1 do
-                local entities = get_valid_entities()
-                local entity_count = #entities
-                if entity_count < settings.global["entity-remover"].value then
-                    j = entity_count
+                if #valid_entities > 1 then
+                    iters = #valid_entities
                 else
-                    j = settings.global["entity-remover"].value
+                    iters = 0
                 end
-                local random_number = math.random(j)
-                local selected_entity = entities[random_number]
-                local posX = selected_entity.position["x"]
-                local posY = selected_entity.position["y"]                    
-                game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
-                selected_entity.destroy()
+            end
+            if iters > 0 then
+                for i = 1, iters, 1 do
+                    local random_number = math.random(#valid_entities)
+                    local selected_entity = valid_entities[random_number]
+                    local posX = selected_entity.position["x"]
+                    local posY = selected_entity.position["y"]
+                    game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
+                    table_pos = ydwd.indexOf(valid_entities, selected_entity)
+                    table.remove(valid_entities, table_pos)
+                    selected_entity.destroy()
+                end
+            else
+                game.print("There is nothing left to remove!")
             end
         end
     end
