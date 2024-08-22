@@ -44,5 +44,4 @@ luac.out
 *.hex
 
 # Other
-control-old.lua
 .vscode/

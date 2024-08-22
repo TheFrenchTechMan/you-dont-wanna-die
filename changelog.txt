@@ -1,4 +1,10 @@
 ---------------------------------------------------------------------------------------------------
+Version: 1.0.5
+Date: 23/08/2024
+  Changes:
+    - Death events mod options are now all false or 0 by default
+    - Chat messages now use the localised name instead of the internal name
+---------------------------------------------------------------------------------------------------
 Version: 1.0.4
 Date: 20/08/2024
   Features:

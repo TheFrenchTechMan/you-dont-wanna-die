@@ -17,17 +17,20 @@ script.on_event(
             local localised_techs = {}
             for _, data in pairs(force.technologies) do
                 if data.researched then
-                    techs[#techs + 1] = data.name
+                    techs[#techs + 1] = data
                 end
             end
 
             local count = #techs
 
             if count > 0 then
-                local tech_name = techs[math.random(1, count)]
-                if tech_name then
-                    ydwd.clear_tech(force, tech_name)
-                    game.print('Cleared ' .. tech_name)
+                local random_number = math.random(1, count)
+                local selected_tech = techs[random_number]
+                if selected_tech then
+                    ydwd.clear_tech(force, selected_tech)
+                    game.print({"internal.cleared", selected_tech.localised_name})
+                else
+                    game.print("No technology left to remove!")
                 end
             end
         end
@@ -53,6 +56,7 @@ script.on_event(
                     local posX = selected_entity.position["x"]
                     local posY = selected_entity.position["y"]
                     game.print("(" .. tostring(i) .. ") Removed entity " .. selected_entity.name .. " at position (" .. posX .. ";" .. posY .. ").")
+                    game.print({"internal.removed", i, selected_entity.localised_name, posX, posY})
                     table_pos = ydwd.indexOf(valid_entities, selected_entity)
                     table.remove(valid_entities, table_pos)
                     selected_entity.destroy()
