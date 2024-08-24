@@ -14,7 +14,6 @@ script.on_event(
         --MARK: TECH CLEARER
         if settings.global["tech-clearer"].value == true then
             local techs = {}
-            local localised_techs = {}
             for _, data in pairs(force.technologies) do
                 if data.researched then
                     techs[#techs + 1] = data
